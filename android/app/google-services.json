@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "849265291135",
+    "firebase_url": "https://wwi20amc-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "wwi20amc",
+    "storage_bucket": "wwi20amc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849265291135:android:03b64c9fee6aff5fb9744a",
+        "android_client_info": {
+          "package_name": "com.example.app_entwicklung"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849265291135-n5a83kdivqnjkav2f9sa9qpebsjv6f7f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5mZ_b209G7X_BDJllJNxA6teE_wodFz0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "849265291135-n5a83kdivqnjkav2f9sa9qpebsjv6f7f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
