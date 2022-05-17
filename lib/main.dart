@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
   }
 }
 
-Widget buildName() {
+Widget buildField(var Text) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -54,7 +54,7 @@ Widget buildName() {
                 Icons.email,
                 color: Color(0xff5ac18e),
               ),
-              hintText: 'Name',
+              hintText: Text,
               hintStyle: TextStyle(
                   color: Colors.black38
               )
@@ -64,47 +64,7 @@ Widget buildName() {
     ],
   );
 }
-Widget buildArtikel() {
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: <Widget>[
-      SizedBox(height: 18),
-      Container(
-        alignment: Alignment.centerLeft,
-        decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 6,
-                  offset: Offset(0,2)
-              )
-            ]
-        ),
-        height: 60,
-        child: TextField(
-          keyboardType: TextInputType.emailAddress,
-          style: TextStyle(
-            color: Colors.black87,
-          ),
-          decoration: InputDecoration(
-              border: InputBorder.none,
-              contentPadding: EdgeInsets.only(top: 14),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Color(0xff5ac18e),
-              ),
-              hintText: 'Artikel',
-              hintStyle: TextStyle(
-                  color: Colors.black38
-              )
-          ),
-        ),
-      )
-    ],
-  );
-}
+
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
@@ -201,8 +161,9 @@ class  page1 extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
-                      buildName(),
-
+                      buildField('Vorname'),
+                      buildField('Artikel'),
+                      buildField('Preis'),
                     ],
                   ),
                 ),
