@@ -1,9 +1,17 @@
+import 'package:app_preiser/Homepage.dart';
+import 'package:app_preiser/authentication_class.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+
+import 'SignInPage.dart';
 
 
-void main() {
-
+Future <void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -13,17 +21,45 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Bestellübersicht'),
-    );
+    return MultiProvider(
+        providers: [
+          Provider<AuthenticationService>(
+              create: (_) => AuthenticationService(FirebaseAuth.instance)
+          ),
+          
+          StreamProvider(
+              create: (context) => context.read<AuthenticationService>().authStateChanges, initialData: null,
+          )
+         ],
+        child: MaterialApp(
+            title: 'Flutter Demo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: AuthenticationWrapper(),
+          )
+        );
   }
 }
 
-Widget buildField(var Text) {
+class AuthenticationWrapper extends StatelessWidget {
+  const AuthenticationWrapper({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final firebaseUser = context.watch<User?>();
+
+    if(firebaseUser != null){
+      print("yes");
+      return HomePage();
+    }
+    print("no");
+    return SignInPage();
+  }
+}
+
+
+Widget buildField(var Text, int x) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -50,13 +86,10 @@ Widget buildField(var Text) {
           decoration: InputDecoration(
               border: InputBorder.none,
               contentPadding: EdgeInsets.only(top: 14),
-              prefixIcon: Icon(
-                Icons.email,
-                color: Color(0xff5ac18e),
-              ),
-              hintText: Text,
-              hintStyle: TextStyle(
-                  color: Colors.black38
+               prefixIcon: Icon(IconData(x, fontFamily: 'MaterialIcons')),
+                hintText: Text,
+                hintStyle: TextStyle(
+                color: Colors.black38
               )
           ),
         ),
@@ -161,9 +194,9 @@ class  page1 extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
-                      buildField('Vorname'),
-                      buildField('Artikel'),
-                      buildField('Preis'),
+                      buildField('Vorname',0xf04b6),
+                      buildField('Artikel',0xf04b6),
+                      buildField('Preis',0xe0b2),
                     ],
                   ),
                 ),
