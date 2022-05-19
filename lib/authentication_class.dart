@@ -1,4 +1,9 @@
+import 'package:app_preiser/Homepage.dart';
+import 'package:app_preiser/SignInPage.dart';
+import 'package:app_preiser/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AuthenticationService {
 
@@ -6,20 +11,29 @@ class AuthenticationService {
 
   AuthenticationService(this._firebaseAuth);
 
-  Stream<User?> get authStateChanges => _firebaseAuth.idTokenChanges();
+  Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
 
-  Future<void> signOut() async {
-    await _firebaseAuth.signOut();
+  Future<void> signOut(BuildContext context) async {
+    //await _firebaseAuth.signOut();
+    FirebaseAuth.instance.signOut();
+    print("hops");
+    //runApp(
+    //    MaterialApp(
+    //     home: SignInPage(),
+    //    )
+    //);
+    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
   }
-  Future<String?> signIn({required String email, required String password}) async{
+  Future<String?> signIn({required String email, required String password, required BuildContext context}) async{
     print(email);
     print(password);
     try{
       await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
       print("angemeldet");
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
           return "erfolgreich angemeldet";
     } on FirebaseAuthException catch (e){
-      print("nix");
+      print("nicht angemeldet");
           return e.message;
     }
 

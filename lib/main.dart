@@ -5,7 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'Homepage.dart';
 import 'SignInPage.dart';
 
 
@@ -50,16 +50,16 @@ class AuthenticationWrapper extends StatelessWidget {
     final firebaseUser = context.watch<User?>();
 
     if(firebaseUser != null){
-      print("yes");
+      print("ja");
       return HomePage();
     }
-    print("no");
-    return SignInPage();
+      print("nein");
+      return SignInPage();
   }
 }
 
 
-Widget buildField(var Text, int x) {
+Widget buildField(var Text, int x, TextEditingController mailcontroller) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -79,6 +79,7 @@ Widget buildField(var Text, int x) {
         ),
         height: 60,
         child: TextField(
+          controller : mailcontroller,
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(
             color: Colors.black87,
@@ -97,118 +98,3 @@ Widget buildField(var Text, int x) {
     ],
   );
 }
-
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-
-    return Scaffold(
-      appBar: AppBar(
-
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'Fügen Sie eine Bestellung hinzu:',
-            ),
-            //Text(
-
-          //  ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.of(context)
-              .push(
-                  MaterialPageRoute(builder: (context) => page1())
-          );
-        },
-        backgroundColor: Colors.green,
-        child: const Icon(Icons.add_circle),
-      ),
-       // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
-}
-class  page1 extends StatelessWidget {
-
-  const page1({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-
-        title: Text('Bestellung anlegen'),
-      ),
-      body: AnnotatedRegion<SystemUiOverlayStyle>(
-        value: SystemUiOverlayStyle.light,
-        child: GestureDetector(
-          child: Stack(
-            children: <Widget>[
-              Container(
-                height: double.infinity,
-                width: double.infinity,
-
-                child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
-                      horizontal: 25,
-                      vertical: 120
-                  ),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        'Bestelldetails',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold
-                        ),
-                      ),
-                      SizedBox(height: 50),
-                      buildField('Vorname',0xf04b6),
-                      buildField('Artikel',0xf04b6),
-                      buildField('Preis',0xe0b2),
-                    ],
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-      ),
-    );
-
-  }
-}
-
-
-// FERHAT = EHrenmann

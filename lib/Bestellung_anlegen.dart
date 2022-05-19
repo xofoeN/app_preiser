@@ -1,20 +1,26 @@
-import 'package:app_preiser/main.dart';
+import 'package:app_preiser/buttons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'Homepage.dart';
 import 'authentication_class.dart';
+import 'main.dart';
 
-class  SignInPage extends StatelessWidget {
+class  bestellungAnlegen extends StatelessWidget {
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
+  const bestellungAnlegen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
 
         title: Text('BestellCount'),
+        actions: <Widget>[
+          new IconButton(onPressed: (){
+            context.read<AuthenticationService>().signOut(context);
+          }, icon: Icon(Icons.power_off)),
+        ],
       ),
       body: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.light,
@@ -35,7 +41,7 @@ class  SignInPage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       Text(
-                        'Log-In',
+                        'Bestelldetails',
                         style: TextStyle(
                             color: Colors.black,
                             fontSize: 40,
@@ -43,18 +49,17 @@ class  SignInPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
-                      buildField("E-Mail", 0xf705, emailController),
-                      buildField("Passwort", 0xf04b6, passwordController),
+                      buildField('Titel',0xf04b6, TextEditingController()),
+                      buildField('Beschreibung',0xf04b6, TextEditingController()),
+                      buildField('Währung',0xe0b2, TextEditingController()),
+                      MyStatefulWidget(),
+                      Dropdown
                       RaisedButton(
                         onPressed: () {
-                          context.read<AuthenticationService>().signIn(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            context:context,
-                          );
+                          context.read<AuthenticationService>().signOut(context);
                         },
-                        child: Text("anmelden"),
-                      )
+                        child: Text("Sign out"),
+                      ),
                     ],
                   ),
                 ),
