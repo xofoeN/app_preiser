@@ -2,6 +2,7 @@ import 'package:app_preiser/Homepage.dart';
 import 'package:app_preiser/SignInPage.dart';
 import 'package:app_preiser/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +13,7 @@ class AuthenticationService {
   AuthenticationService(this._firebaseAuth);
 
   Stream<User?> get authStateChanges => _firebaseAuth.authStateChanges();
+  final databaseRef = FirebaseDatabase.instance.ref();
 
   Future<void> signOut(BuildContext context) async {
     //await _firebaseAuth.signOut();
@@ -38,12 +40,29 @@ class AuthenticationService {
     }
 
   }
-  Future<String?> signUp({required String email, required String password}) async{
+  Future<String?> signUp({required String email, required String password, required String Vorname, required String Nachname}) async{
     try{
       await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+      datenEinfuegen(Vorname, Nachname, getuserID());
           return "Benutzer erstellt";
     } on FirebaseAuthException catch (e){
           return e.message;
     }
   }
+  void datenEinfuegen(String Vorname, String Nachname, String? userID){
+    databaseRef.child("Nutzer/$userID").set({
+          "Vorname": Vorname,
+          "Nachname": Nachname,
+
+      }
+    ) ;
+  }
+  String? getuserID(){
+    final User? userx = _firebaseAuth.currentUser;
+    final userID = userx?.uid;
+    return userID;
+
+  }
+
 }
+

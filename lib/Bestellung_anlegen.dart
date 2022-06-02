@@ -52,13 +52,12 @@ class  bestellungAnlegen extends StatelessWidget {
                       buildField('Titel',0xf04b6, TextEditingController()),
                       buildField('Beschreibung',0xf04b6, TextEditingController()),
                       buildField('Währung',0xe0b2, TextEditingController()),
-                      MyStatefulWidget(),
-                      Dropdown
+                      SizedBox(height: 50),
                       RaisedButton(
                         onPressed: () {
-                          context.read<AuthenticationService>().signOut(context);
+
                         },
-                        child: Text("Sign out"),
+                        child: Text("Bestellung anlegen"),
                       ),
                     ],
                   ),

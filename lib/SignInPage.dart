@@ -8,6 +8,8 @@ class  SignInPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController vornameController = TextEditingController();
+  final TextEditingController nachnameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class  SignInPage extends StatelessWidget {
                       SizedBox(height: 50),
                       buildField("E-Mail", 0xf705, emailController),
                       buildField("Passwort", 0xf04b6, passwordController),
+                      SizedBox(height: 25),
                       RaisedButton(
                         onPressed: () {
                           context.read<AuthenticationService>().signIn(
@@ -54,7 +57,32 @@ class  SignInPage extends StatelessWidget {
                           );
                         },
                         child: Text("anmelden"),
-                      )
+                      ),
+                      SizedBox(height: 50),
+                      Text(
+                        'Registrieren',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold
+                        ),
+                      ),
+                      buildField("Vorname", 0xf04b6, vornameController),
+                      buildField("Nachname", 0xf04b6, nachnameController),
+                      buildField("E-Mail", 0xf705, emailController),
+                      buildField("Passwort", 0xf04b6, passwordController),
+                      SizedBox(height: 25),
+                      RaisedButton(
+                        onPressed: () {
+                          context.read<AuthenticationService>().signUp(
+                            email: emailController.text,
+                            password: passwordController.text,
+                            Vorname: vornameController.text,
+                            Nachname: nachnameController.text,
+                          );
+                        },
+                        child: Text("registrieren"),
+                      ),
                     ],
                   ),
                 ),
