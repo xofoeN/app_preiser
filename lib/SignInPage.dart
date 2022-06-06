@@ -45,8 +45,8 @@ class  SignInPage extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 50),
-                      buildField("E-Mail", 0xf705, emailController),
-                      buildField("Passwort", 0xf04b6, passwordController),
+                      buildField("E-Mail", 0xf705, emailController,60),
+                      buildField("Passwort", 0xf04b6, passwordController,60),
                       SizedBox(height: 25),
                       RaisedButton(
                         onPressed: () {
@@ -67,10 +67,10 @@ class  SignInPage extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      buildField("Vorname", 0xf04b6, vornameController),
-                      buildField("Nachname", 0xf04b6, nachnameController),
-                      buildField("E-Mail", 0xf705, emailController),
-                      buildField("Passwort", 0xf04b6, passwordController),
+                      buildField("Vorname", 0xf04b6, vornameController,60),
+                      buildField("Nachname", 0xf04b6, nachnameController,60),
+                      buildField("E-Mail", 0xf705, emailController,60),
+                      buildField("Passwort", 0xf04b6, passwordController,60),
                       SizedBox(height: 25),
                       RaisedButton(
                         onPressed: () {

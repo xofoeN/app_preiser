@@ -1,3 +1,5 @@
+import 'package:firebase_database/firebase_database.dart';
+import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -9,6 +11,8 @@ import 'main.dart';
 
 
 class HomePage extends StatelessWidget{
+
+  final databaseRef = FirebaseDatabase.instance.ref().child("Bestellungen");
 
   Widget build(BuildContext context) {
 
@@ -22,16 +26,26 @@ class HomePage extends StatelessWidget{
           }, icon: Icon(Icons.power_off)),
         ],
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: const <Widget>[
-            Text(
-              'Fügen Sie eine Bestellung hinzu:',
-            ),
-          ],
+      body: SafeArea(
+        child: FirebaseAnimatedList(
+          query: databaseRef,
+          itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
+            var daten = snapshot.value as Map?;
+            return ListTile(
+              onTap: (){
+                print(daten!["Name"]);
+              },
+              title: Text(daten!["Name"]),
+              subtitle: Text(daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
+              trailing: IconButton(
+                onPressed: (){
+                  var keyFinder = snapshot.key;
+                  print(keyFinder);
+                },
+              icon: Icon(Icons.delete),
+              ),
+            );
+          },
         ),
       ),
       floatingActionButton: FloatingActionButton(

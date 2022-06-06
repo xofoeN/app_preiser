@@ -9,9 +9,13 @@ import 'main.dart';
 
 class  bestellungAnlegen extends StatelessWidget {
 
+
   const bestellungAnlegen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+
+    final TextEditingController produktController = TextEditingController();
+
     return Scaffold(
       appBar: AppBar(
 
@@ -40,22 +44,22 @@ class  bestellungAnlegen extends StatelessWidget {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      Text(
-                        'Bestelldetails',
+                      const Text(
+                        'Produkte hinzufügen',
                         style: TextStyle(
                             color: Colors.black,
-                            fontSize: 40,
+                            fontSize: 35,
                             fontWeight: FontWeight.bold
                         ),
                       ),
                       SizedBox(height: 50),
-                      buildField('Titel',0xf04b6, TextEditingController()),
-                      buildField('Beschreibung',0xf04b6, TextEditingController()),
-                      buildField('Währung',0xe0b2, TextEditingController()),
+                      buildField('Titel',1, produktController,150),
                       SizedBox(height: 50),
                       RaisedButton(
                         onPressed: () {
-
+                          context.read<AuthenticationService>().addProdukt(
+                            produktController.text
+                          );
                         },
                         child: Text("Bestellung anlegen"),
                       ),
@@ -68,6 +72,5 @@ class  bestellungAnlegen extends StatelessWidget {
         ),
       ),
     );
-
   }
 }

@@ -64,5 +64,17 @@ class AuthenticationService {
 
   }
 
+  void addProdukt(String produkt){
+
+    var changeString = produkt.replaceAll("\n", " \\n ");
+    var userID = getuserID();
+      databaseRef.child("Bestellungen/$userID").set({
+        "Name": "Rouven",
+        "Produkte": changeString,
+
+     }
+    ) ;
+  }
+
 }
 

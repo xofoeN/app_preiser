@@ -59,7 +59,7 @@ class AuthenticationWrapper extends StatelessWidget {
 }
 
 
-Widget buildField(var Text, int x, TextEditingController mailcontroller) {
+Widget buildField(var Text, int x, TextEditingController mailcontroller, double y) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: <Widget>[
@@ -77,8 +77,11 @@ Widget buildField(var Text, int x, TextEditingController mailcontroller) {
               )
             ]
         ),
-        height: 60,
+        height: y,
         child: TextField(
+          textInputAction: TextInputAction.newline,
+          maxLines: null,
+          expands: true,
           controller : mailcontroller,
           keyboardType: TextInputType.emailAddress,
           style: TextStyle(
