@@ -60,6 +60,10 @@ class  bestellungAnlegen extends StatelessWidget {
                           context.read<AuthenticationService>().addProdukt(
                             produktController.text
                           );
+                          Navigator.of(context)
+                              .push(
+                              MaterialPageRoute(builder: (context) => HomePage())
+                          );
                         },
                         child: Text("Bestellung anlegen"),
                       ),

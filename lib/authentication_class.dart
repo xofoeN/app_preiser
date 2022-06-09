@@ -64,17 +64,18 @@ class AuthenticationService {
 
   }
 
-  void addProdukt(String produkt){
+  Future<void> addProdukt(String produkt) async {
 
     var changeString = produkt.replaceAll("\n", " \\n ");
     var userID = getuserID();
-      databaseRef.child("Bestellungen/$userID").set({
-        "Name": "Rouven",
-        "Produkte": changeString,
 
+    final snapshot = await databaseRef.child('Nutzer/$userID/Vorname').get();
+
+      databaseRef.child("Bestellungen/$userID").set({
+        "Name": snapshot.value,
+        "Produkte": changeString,
      }
     ) ;
   }
-
 }
 
