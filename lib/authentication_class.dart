@@ -1,10 +1,13 @@
 import 'package:app_preiser/Homepage.dart';
 import 'package:app_preiser/SignInPage.dart';
 import 'package:app_preiser/main.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+
 
 class AuthenticationService {
 
@@ -19,11 +22,6 @@ class AuthenticationService {
     //await _firebaseAuth.signOut();
     FirebaseAuth.instance.signOut();
     print("hops");
-    //runApp(
-    //    MaterialApp(
-    //     home: SignInPage(),
-    //    )
-    //);
     Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
   }
   Future<String?> signIn({required String email, required String password, required BuildContext context}) async{
@@ -61,7 +59,6 @@ class AuthenticationService {
     final User? userx = _firebaseAuth.currentUser;
     final userID = userx?.uid;
     return userID;
-
   }
 
   Future<void> addProdukt(String produkt) async {
@@ -75,7 +72,14 @@ class AuthenticationService {
         "Name": snapshot.value,
         "Produkte": changeString,
      }
-    ) ;
+    );
+  }
+  Future<String> loadImage(String userID
+      ) async{
+    final ref = FirebaseStorage.instance.ref().child('files///$userID');
+    var url = await ref.getDownloadURL();
+    print(url);
+    return url;
   }
 }
 

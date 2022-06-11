@@ -1,10 +1,14 @@
+import 'dart:io';
+
 import 'package:app_preiser/buttons.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'Homepage.dart';
 import 'authentication_class.dart';
+import 'firebase_storage.dart';
 import 'main.dart';
 
 class  bestellungAnlegen extends StatelessWidget {
@@ -14,6 +18,7 @@ class  bestellungAnlegen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
+    final Storage storage = Storage();
     final TextEditingController produktController = TextEditingController();
 
     return Scaffold(
@@ -21,7 +26,7 @@ class  bestellungAnlegen extends StatelessWidget {
 
         title: Text('BestellCount'),
         actions: <Widget>[
-          new IconButton(onPressed: (){
+          IconButton(onPressed: (){
             context.read<AuthenticationService>().signOut(context);
           }, icon: Icon(Icons.power_off)),
         ],
@@ -66,6 +71,32 @@ class  bestellungAnlegen extends StatelessWidget {
                           );
                         },
                         child: Text("Bestellung anlegen"),
+                      ),
+                      RaisedButton(
+                        onPressed: () async {
+                          final result = await FilePicker.platform.pickFiles(
+                              allowMultiple: false,
+                              type: FileType.custom,
+                              allowedExtensions: ['png','jpg']
+                          );
+                          if(result == null){
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('No file selected'),
+                              ),
+                            );
+                            return null;
+                          }
+
+                          final path = result?.files.single.path!;
+                          final fileName = context.read<AuthenticationService>().getuserID().toString();
+
+                         storage
+                          .upLoadFile(path!, fileName)
+                          .then((value) => print('Done'));
+                        },
+
+                        child: Text("Foto hinzufügen"),
                       ),
                     ],
                   ),

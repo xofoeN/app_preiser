@@ -1,3 +1,5 @@
+import 'package:app_preiser/rechnung.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +14,7 @@ import 'main.dart';
 
 class HomePage extends StatelessWidget{
 
+
   final databaseRef = FirebaseDatabase.instance.ref().child("Bestellungen");
 
   Widget build(BuildContext context) {
@@ -21,7 +24,7 @@ class HomePage extends StatelessWidget{
 
         title: Text("Homepage"),
         actions: <Widget>[
-          new IconButton(onPressed: (){
+          IconButton(onPressed: (){
             context.read<AuthenticationService>().signOut(context);
           }, icon: Icon(Icons.power_off)),
         ],
@@ -31,9 +34,13 @@ class HomePage extends StatelessWidget{
           query: databaseRef,
           itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
             var daten = snapshot.value as Map?;
+
             return ListTile(
-              onTap: (){
-                print(daten!["Name"]);
+              onTap: () {
+                Navigator.of(context)
+                    .push(
+                    MaterialPageRoute(builder: (context) => rechnung())
+                );
               },
               title: Text(daten!["Name"]),
               subtitle: Text(daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
@@ -48,6 +55,8 @@ class HomePage extends StatelessWidget{
           },
         ),
       ),
+
+
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.of(context)
