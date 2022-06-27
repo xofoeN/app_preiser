@@ -7,7 +7,9 @@ import 'authentication_class.dart';
 class  SignInPage extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
+  final TextEditingController emailController2 = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final TextEditingController passwordController2 = TextEditingController();
   final TextEditingController vornameController = TextEditingController();
   final TextEditingController nachnameController = TextEditingController();
 
@@ -46,7 +48,7 @@ class  SignInPage extends StatelessWidget {
                       ),
                       SizedBox(height: 50),
                       buildField("E-Mail", 0xf705, emailController,60),
-                      buildField("Passwort", 0xf04b6, passwordController,60),
+                      buildPW("Passwort", 0xf04b6, passwordController,60),
                       SizedBox(height: 25),
                       RaisedButton(
                         onPressed: () {
@@ -69,14 +71,14 @@ class  SignInPage extends StatelessWidget {
                       ),
                       buildField("Vorname", 0xf04b6, vornameController,60),
                       buildField("Nachname", 0xf04b6, nachnameController,60),
-                      buildField("E-Mail", 0xf705, emailController,60),
-                      buildField("Passwort", 0xf04b6, passwordController,60),
+                      buildField("E-Mail", 0xf705, emailController2,60),
+                      buildPW("Passwort", 0xf04b6, passwordController2,60),
                       SizedBox(height: 25),
                       RaisedButton(
                         onPressed: () {
                           context.read<AuthenticationService>().signUp(
-                            email: emailController.text,
-                            password: passwordController.text,
+                            email: emailController2.text,
+                            password: passwordController2.text,
                             Vorname: vornameController.text,
                             Nachname: nachnameController.text,
                           );

@@ -22,64 +22,80 @@ class AuthenticationService {
     //await _firebaseAuth.signOut();
     FirebaseAuth.instance.signOut();
     print("hops");
-    Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
   }
-  Future<String?> signIn({required String email, required String password, required BuildContext context}) async{
+
+  Future<String?> signIn(
+      {required String email, required String password, required BuildContext context}) async {
     print(email);
     print(password);
-    try{
-      await _firebaseAuth.signInWithEmailAndPassword(email: email, password: password);
+    try {
+      await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       print("angemeldet");
-      Navigator.of(context).push(MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
-          return "erfolgreich angemeldet";
-    } on FirebaseAuthException catch (e){
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => AuthenticationWrapper()));
+      return "erfolgreich angemeldet";
+    } on FirebaseAuthException catch (e) {
       print("nicht angemeldet");
-          return e.message;
+      return e.message;
     }
-
   }
-  Future<String?> signUp({required String email, required String password, required String Vorname, required String Nachname}) async{
-    try{
-      await _firebaseAuth.createUserWithEmailAndPassword(email: email, password: password);
+
+  Future<String?> signUp(
+      {required String email, required String password, required String Vorname, required String Nachname}) async {
+    try {
+      await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
       datenEinfuegen(Vorname, Nachname, getuserID());
-          return "Benutzer erstellt";
-    } on FirebaseAuthException catch (e){
-          return e.message;
+      return "Benutzer erstellt";
+    } on FirebaseAuthException catch (e) {
+      return e.message;
     }
   }
-  void datenEinfuegen(String Vorname, String Nachname, String? userID){
-    databaseRef.child("Nutzer/$userID").set({
-          "Vorname": Vorname,
-          "Nachname": Nachname,
 
-      }
-    ) ;
+  void datenEinfuegen(String Vorname, String Nachname, String? userID) {
+    databaseRef.child("Nutzer/$userID").set({
+      "Vorname": Vorname,
+      "Nachname": Nachname,
+
+    }
+    );
   }
-  String? getuserID(){
+
+  String? getuserID() {
     final User? userx = _firebaseAuth.currentUser;
     final userID = userx?.uid;
     return userID;
   }
 
   Future<void> addProdukt(String produkt) async {
-
     var changeString = produkt.replaceAll("\n", " \\n ");
     var userID = getuserID();
 
     final snapshot = await databaseRef.child('Nutzer/$userID/Vorname').get();
 
-      databaseRef.child("Bestellungen/$userID").set({
-        "Name": snapshot.value,
-        "Produkte": changeString,
-     }
+    databaseRef.child("Bestellungen/$userID").set({
+      "Name": snapshot.value,
+      "Produkte": changeString,
+    }
     );
   }
-  Future<String> loadImage(String userID
-      ) async{
+
+  Future<String> loadImage(String userID) async {
     final ref = FirebaseStorage.instance.ref().child('files///$userID');
     var url = await ref.getDownloadURL();
     print(url);
     return url;
   }
-}
 
+  deleteFolder(path) {
+    final ref = FirebaseStorage.instance.ref().child('files/');
+  }
+
+  Future clearBestellung() async {
+    databaseRef.child("Bestellungen").remove();
+    return await FirebaseStorage.instance.ref().child('').delete();
+  }
+}

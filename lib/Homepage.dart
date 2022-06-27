@@ -10,11 +10,12 @@ import 'Bestellung_anlegen.dart';
 import 'Homepage.dart';
 import 'authentication_class.dart';
 import 'main.dart';
+import 'firebase_storage.dart';
 
 
 class HomePage extends StatelessWidget{
 
-
+  final Storage storage = Storage();
   final databaseRef = FirebaseDatabase.instance.ref().child("Bestellungen");
 
   Widget build(BuildContext context) {
@@ -25,8 +26,45 @@ class HomePage extends StatelessWidget{
         title: Text("Homepage"),
         actions: <Widget>[
           IconButton(onPressed: (){
+            context.read<AuthenticationService>().clearBestellung();
+          }, icon: Icon(Icons.delete)
+          ),
+          IconButton(onPressed: () async {
+              final result = await FilePicker.platform.pickFiles(
+                  allowMultiple: false,
+                  type: FileType.custom,
+                  allowedExtensions: ['png','jpg']
+              );
+                if(result == null){
+                  ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('No file selected'),
+                ),
+                  );
+              return null;
+              }
+
+              final path = result?.files.single.path!;
+              final fileName = context.read<AuthenticationService>().getuserID().toString();
+
+              storage
+                  .upLoadFile(path!, fileName)
+                  .then((value) => print('Done')
+                );
+              },
+              icon: Icon(Icons.upload_file)
+          ),
+          IconButton(onPressed: (){
+            Navigator.of(context)
+                .push(
+                MaterialPageRoute(builder: (context) => rechnung())
+            );
+          }, icon: Icon(Icons.document_scanner)
+          ),
+          IconButton(onPressed: (){
             context.read<AuthenticationService>().signOut(context);
-          }, icon: Icon(Icons.power_off)),
+          }, icon: Icon(Icons.power_off)
+          ),
         ],
       ),
       body: SafeArea(
@@ -36,21 +74,9 @@ class HomePage extends StatelessWidget{
             var daten = snapshot.value as Map?;
 
             return ListTile(
-              onTap: () {
-                Navigator.of(context)
-                    .push(
-                    MaterialPageRoute(builder: (context) => rechnung())
-                );
-              },
               title: Text(daten!["Name"]),
               subtitle: Text(daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
-              trailing: IconButton(
-                onPressed: (){
-                  var keyFinder = snapshot.key;
-                  print(keyFinder);
-                },
-              icon: Icon(Icons.delete),
-              ),
+
             );
           },
         ),

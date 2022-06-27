@@ -18,7 +18,6 @@ class  bestellungAnlegen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final Storage storage = Storage();
     final TextEditingController produktController = TextEditingController();
 
     return Scaffold(
@@ -71,32 +70,6 @@ class  bestellungAnlegen extends StatelessWidget {
                           );
                         },
                         child: Text("Bestellung anlegen"),
-                      ),
-                      RaisedButton(
-                        onPressed: () async {
-                          final result = await FilePicker.platform.pickFiles(
-                              allowMultiple: false,
-                              type: FileType.custom,
-                              allowedExtensions: ['png','jpg']
-                          );
-                          if(result == null){
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text('No file selected'),
-                              ),
-                            );
-                            return null;
-                          }
-
-                          final path = result?.files.single.path!;
-                          final fileName = context.read<AuthenticationService>().getuserID().toString();
-
-                         storage
-                          .upLoadFile(path!, fileName)
-                          .then((value) => print('Done'));
-                        },
-
-                        child: Text("Foto hinzufügen"),
                       ),
                     ],
                   ),
