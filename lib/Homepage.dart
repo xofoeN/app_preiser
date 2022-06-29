@@ -1,22 +1,22 @@
+import 'package:app_preiser/Bestellung_2.dart';
 import 'package:app_preiser/rechnung.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'Bestellung_anlegen.dart';
-import 'Homepage.dart';
 import 'authentication_class.dart';
-import 'main.dart';
 import 'firebase_storage.dart';
+
 
 
 class HomePage extends StatelessWidget{
 
   final Storage storage = Storage();
   final databaseRef = FirebaseDatabase.instance.ref().child("Bestellungen");
+
 
   Widget build(BuildContext context) {
 
@@ -68,15 +68,17 @@ class HomePage extends StatelessWidget{
         ],
       ),
       body: SafeArea(
-        child: FirebaseAnimatedList(
+        child:
+        FirebaseAnimatedList(
           query: databaseRef,
           itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
             var daten = snapshot.value as Map?;
 
+
+
             return ListTile(
               title: Text(daten!["Name"]),
-              subtitle: Text(daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
-
+              subtitle: Text("Laden: "+daten!["laden"].toString()+"\n \n"+daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
             );
           },
         ),
@@ -87,7 +89,7 @@ class HomePage extends StatelessWidget{
         onPressed: () {
           Navigator.of(context)
               .push(
-              MaterialPageRoute(builder: (context) => const bestellungAnlegen())
+              MaterialPageRoute(builder: (context) => const bestellungenstfl())
           );
         },
         backgroundColor: Colors.green,

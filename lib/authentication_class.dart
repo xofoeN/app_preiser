@@ -70,7 +70,7 @@ class AuthenticationService {
     return userID;
   }
 
-  Future<void> addProdukt(String produkt) async {
+  Future<void> addProdukt(String produkt, String? laden) async {
     var changeString = produkt.replaceAll("\n", " \\n ");
     var userID = getuserID();
 
@@ -79,6 +79,7 @@ class AuthenticationService {
     databaseRef.child("Bestellungen/$userID").set({
       "Name": snapshot.value,
       "Produkte": changeString,
+      "laden": laden,
     }
     );
   }

@@ -1,25 +1,29 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+
 import 'Homepage.dart';
 import 'authentication_class.dart';
 import 'main.dart';
 
-class  bestellungAnlegen extends StatelessWidget {
+class bestellungenstfl extends StatefulWidget {
+  const bestellungenstfl({Key? key}) : super(key: key);
+
+  @override
+  State<bestellungenstfl> createState() => _bestellungenstlState();
+}
 
 
-  const bestellungAnlegen({Key? key}) : super(key: key);
+class _bestellungenstlState extends State<bestellungenstfl> {
+
+  final TextEditingController produktController = TextEditingController();
+
+  final items = ["Lidl","Aldi","E-Center"];
+  String? value;
+
   @override
   Widget build(BuildContext context) {
-
-    final TextEditingController produktController = TextEditingController();
-
-    final items = ["Lidl","Aldi","E-Center"];
-    String? value;
-
     return Scaffold(
       appBar: AppBar(
 
@@ -40,8 +44,8 @@ class  bestellungAnlegen extends StatelessWidget {
                 width: double.infinity,
 
                 child: SingleChildScrollView(
-                  physics: AlwaysScrollableScrollPhysics(),
-                  padding: EdgeInsets.symmetric(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
                       horizontal: 25,
                       vertical: 120
                   ),
@@ -56,14 +60,21 @@ class  bestellungAnlegen extends StatelessWidget {
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      SizedBox(height: 50),
+                      const SizedBox(height: 50),
                       buildField('Gib deine Produkte ein',1, produktController,150),
-                      SizedBox(height: 50),
+                      const SizedBox(height: 25),
+                      DropdownButton<String>(
+                        value: value,
+                        hint: Text("Laden"),
+                        items: items.map(buildMenuItem).toList(),
+                        onChanged: (value) => setState(() => this.value = value),
+                      ),
+                      const SizedBox(height: 50),
                       RaisedButton(
                         onPressed: () {
                           context.read<AuthenticationService>().addProdukt(
-                            produktController.text,
-                            value.toString()
+                              produktController.text,
+                              value
                           );
                           Navigator.of(context)
                               .push(
