@@ -6,7 +6,6 @@ import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Bestellung_anlegen.dart';
 import 'authentication_class.dart';
 import 'firebase_storage.dart';
 
@@ -27,7 +26,7 @@ class HomePage extends StatelessWidget{
         actions: <Widget>[
           IconButton(onPressed: (){
             context.read<AuthenticationService>().clearBestellung();
-          }, icon: Icon(Icons.delete)
+          }, icon: Icon(Icons.shopping_cart)
           ),
           IconButton(onPressed: () async {
               final result = await FilePicker.platform.pickFiles(
@@ -73,12 +72,18 @@ class HomePage extends StatelessWidget{
           query: databaseRef,
           itemBuilder: (BuildContext context, DataSnapshot snapshot, Animation<double> animation, int index){
             var daten = snapshot.value as Map?;
-
-
-
             return ListTile(
-              title: Text(daten!["Name"]),
-              subtitle: Text("Laden: "+daten!["laden"].toString()+"\n \n"+daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
+
+              title: Text(daten!["Name"],style: TextStyle(fontWeight: FontWeight.bold)),
+              subtitle: Text("Geschäft: "+daten!["laden"].toString()+"\n \n"+daten!["Produkte"].toString().replaceAll(" \\n ", "\n")),
+              trailing: FlatButton.icon(onPressed: (){
+                context.read<AuthenticationService>().clearBestellungUID(context, daten!["id"].toString());
+              },
+                  icon: Icon(Icons.delete), label: Text("Bestellung löschen")),
+              shape: RoundedRectangleBorder(
+                side: BorderSide(color: Colors.black, width: 1),
+                borderRadius: BorderRadius.circular(0),
+              ),
             );
           },
         ),

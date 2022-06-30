@@ -67,9 +67,11 @@ class _rechnungState extends State<rechnung> {
           builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
             if(snapshot.connectionState == ConnectionState.done && snapshot.hasData) {
             return Container(
-              width: 300,
+              alignment: Alignment.center,
+              width: 400,
               height: 250,
               child: Image.network(
+
                     snapshot.data!,
                     fit: BoxFit.cover,
               ));

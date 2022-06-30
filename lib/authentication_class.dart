@@ -1,7 +1,5 @@
-import 'package:app_preiser/Homepage.dart';
-import 'package:app_preiser/SignInPage.dart';
+
 import 'package:app_preiser/main.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/cupertino.dart';
@@ -39,6 +37,7 @@ class AuthenticationService {
       return "erfolgreich angemeldet";
     } on FirebaseAuthException catch (e) {
       print("nicht angemeldet");
+      showAlertDialog(context, "Bitte überprüfe deine E-Mail und das Passwort", "Anmeldung fehlgeschlagen");
       return e.message;
     }
   }
@@ -70,6 +69,7 @@ class AuthenticationService {
     return userID;
   }
 
+
   Future<void> addProdukt(String produkt, String? laden) async {
     var changeString = produkt.replaceAll("\n", " \\n ");
     var userID = getuserID();
@@ -80,6 +80,7 @@ class AuthenticationService {
       "Name": snapshot.value,
       "Produkte": changeString,
       "laden": laden,
+      "id": getuserID(),
     }
     );
   }
@@ -98,5 +99,45 @@ class AuthenticationService {
   Future clearBestellung() async {
     databaseRef.child("Bestellungen").remove();
     return await FirebaseStorage.instance.ref().child('').delete();
+  }
+
+  Future clearBestellungUID(BuildContext context, String userID) async {
+    if(userID != getuserID()) {
+      showAlertDialog(context, "Du kannst keine Bestellungen anderer löschen", "löschen fehlgeschlagen");
+      return;
+    } else {
+      print(userID);
+      databaseRef.child("Bestellungen/$userID").remove();
+      return await FirebaseStorage.instance.ref().child('').delete();
+    }
+  }
+
+  showAlertDialog(BuildContext context, String text, String title) {
+
+    // set up the button
+    Widget okButton = TextButton(
+      style: TextButton.styleFrom(
+        primary: Colors.green,
+      ),
+      child: Text("OK"),
+      onPressed: () => Navigator.pop(context),
+    );
+
+    // set up the AlertDialog
+    AlertDialog alert = AlertDialog(
+      title: Text(title),
+      content: Text(text),
+      actions: [
+        okButton,
+      ],
+    );
+
+    // show the dialog
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }
